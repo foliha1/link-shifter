@@ -163,6 +163,11 @@ function UserFooter() {
 }
 
 function MobileTopBar() {
+  const { profile } = useAuth();
+  const isAdmin = profile?.role === "admin";
+  const items = isAdmin
+    ? [...NAV, { to: "/clients", label: "Clients", exact: false } as const]
+    : NAV;
   return (
     <div className="flex h-12 items-center justify-between border-b border-border px-4 md:hidden">
       <div className="flex items-center gap-2">
@@ -172,7 +177,7 @@ function MobileTopBar() {
         <span className="font-mono text-sm font-medium">relay</span>
       </div>
       <nav className="flex gap-3">
-        {NAV.map((n) => (
+        {items.map((n) => (
           <Link
             key={n.to}
             to={n.to}
