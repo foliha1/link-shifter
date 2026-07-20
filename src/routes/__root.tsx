@@ -38,6 +38,18 @@ function NotFoundComponent() {
   );
 }
 
+function formatErrorDebug(error: Error): string {
+  const lines: string[] = [];
+  lines.push(error.message);
+
+  const anyError = error as Record<string, unknown>;
+  if (anyError.code) lines.push(`code: ${anyError.code}`);
+  if (anyError.details) lines.push(`details: ${anyError.details}`);
+  if (anyError.hint) lines.push(`hint: ${anyError.hint}`);
+
+  return lines.join("\n");
+}
+
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
@@ -57,6 +69,9 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
         <p className="mt-2 text-sm text-muted-foreground">
           Something went wrong. Try again or head back home.
         </p>
+        <pre className="mt-4 whitespace-pre-wrap break-words rounded-md border border-border bg-surface p-3 text-left font-mono text-xs text-muted-foreground">
+          {formatErrorDebug(error)}
+        </pre>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
             onClick={() => {
