@@ -78,6 +78,11 @@ function DashboardLayout() {
 
 function Sidebar() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const { profile } = useAuth();
+  const isAdmin = profile?.role === "admin";
+  const items = isAdmin
+    ? [...NAV, { to: "/clients", label: "Clients", exact: false } as const]
+    : NAV;
 
   return (
     <aside className="hidden w-56 shrink-0 flex-col border-r border-border bg-background md:flex">
@@ -91,7 +96,7 @@ function Sidebar() {
       </div>
 
       <nav className="flex flex-col gap-px px-3 py-2">
-        {NAV.map((item) => {
+        {items.map((item) => {
           const active = item.exact
             ? pathname === item.to
             : pathname.startsWith(item.to);
@@ -158,6 +163,11 @@ function UserFooter() {
 }
 
 function MobileTopBar() {
+  const { profile } = useAuth();
+  const isAdmin = profile?.role === "admin";
+  const items = isAdmin
+    ? [...NAV, { to: "/clients", label: "Clients", exact: false } as const]
+    : NAV;
   return (
     <div className="flex h-12 items-center justify-between border-b border-border px-4 md:hidden">
       <div className="flex items-center gap-2">
@@ -167,7 +177,7 @@ function MobileTopBar() {
         <span className="font-mono text-sm font-medium">relay</span>
       </div>
       <nav className="flex gap-3">
-        {NAV.map((n) => (
+        {items.map((n) => (
           <Link
             key={n.to}
             to={n.to}

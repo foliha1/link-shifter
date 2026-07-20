@@ -14,6 +14,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as DashboardRouteImport } from './routes/_dashboard'
 import { Route as DashboardIndexRouteImport } from './routes/_dashboard.index'
 import { Route as DashboardSettingsRouteImport } from './routes/_dashboard.settings'
+import { Route as DashboardClientsRouteImport } from './routes/_dashboard.clients'
 import { Route as DashboardCampaignsRouteImport } from './routes/_dashboard.campaigns'
 import { Route as DashboardAnalyticsRouteImport } from './routes/_dashboard.analytics'
 
@@ -41,6 +42,11 @@ const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => DashboardRoute,
 } as any)
+const DashboardClientsRoute = DashboardClientsRouteImport.update({
+  id: '/clients',
+  path: '/clients',
+  getParentRoute: () => DashboardRoute,
+} as any)
 const DashboardCampaignsRoute = DashboardCampaignsRouteImport.update({
   id: '/campaigns',
   path: '/campaigns',
@@ -58,6 +64,7 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/analytics': typeof DashboardAnalyticsRoute
   '/campaigns': typeof DashboardCampaignsRoute
+  '/clients': typeof DashboardClientsRoute
   '/settings': typeof DashboardSettingsRoute
 }
 export interface FileRoutesByTo {
@@ -65,6 +72,7 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/analytics': typeof DashboardAnalyticsRoute
   '/campaigns': typeof DashboardCampaignsRoute
+  '/clients': typeof DashboardClientsRoute
   '/settings': typeof DashboardSettingsRoute
   '/': typeof DashboardIndexRoute
 }
@@ -75,6 +83,7 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/_dashboard/analytics': typeof DashboardAnalyticsRoute
   '/_dashboard/campaigns': typeof DashboardCampaignsRoute
+  '/_dashboard/clients': typeof DashboardClientsRoute
   '/_dashboard/settings': typeof DashboardSettingsRoute
   '/_dashboard/': typeof DashboardIndexRoute
 }
@@ -86,9 +95,17 @@ export interface FileRouteTypes {
     | '/signup'
     | '/analytics'
     | '/campaigns'
+    | '/clients'
     | '/settings'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/signup' | '/analytics' | '/campaigns' | '/settings' | '/'
+  to:
+    | '/login'
+    | '/signup'
+    | '/analytics'
+    | '/campaigns'
+    | '/clients'
+    | '/settings'
+    | '/'
   id:
     | '__root__'
     | '/_dashboard'
@@ -96,6 +113,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/_dashboard/analytics'
     | '/_dashboard/campaigns'
+    | '/_dashboard/clients'
     | '/_dashboard/settings'
     | '/_dashboard/'
   fileRoutesById: FileRoutesById
@@ -143,6 +161,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardSettingsRouteImport
       parentRoute: typeof DashboardRoute
     }
+    '/_dashboard/clients': {
+      id: '/_dashboard/clients'
+      path: '/clients'
+      fullPath: '/clients'
+      preLoaderRoute: typeof DashboardClientsRouteImport
+      parentRoute: typeof DashboardRoute
+    }
     '/_dashboard/campaigns': {
       id: '/_dashboard/campaigns'
       path: '/campaigns'
@@ -163,6 +188,7 @@ declare module '@tanstack/react-router' {
 interface DashboardRouteChildren {
   DashboardAnalyticsRoute: typeof DashboardAnalyticsRoute
   DashboardCampaignsRoute: typeof DashboardCampaignsRoute
+  DashboardClientsRoute: typeof DashboardClientsRoute
   DashboardSettingsRoute: typeof DashboardSettingsRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
 }
@@ -170,6 +196,7 @@ interface DashboardRouteChildren {
 const DashboardRouteChildren: DashboardRouteChildren = {
   DashboardAnalyticsRoute: DashboardAnalyticsRoute,
   DashboardCampaignsRoute: DashboardCampaignsRoute,
+  DashboardClientsRoute: DashboardClientsRoute,
   DashboardSettingsRoute: DashboardSettingsRoute,
   DashboardIndexRoute: DashboardIndexRoute,
 }
