@@ -42,7 +42,7 @@ function formatErrorDebug(error: Error): string {
   const lines: string[] = [];
   lines.push(error.message);
 
-  const anyError = error as Record<string, unknown>;
+  const anyError = error as unknown as Record<string, unknown>;
   if (anyError.code) lines.push(`code: ${anyError.code}`);
   if (anyError.details) lines.push(`details: ${anyError.details}`);
   if (anyError.hint) lines.push(`hint: ${anyError.hint}`);
