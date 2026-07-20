@@ -1,9 +1,14 @@
-import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, redirect, useNavigate, useSearch } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
+type LoginSearch = { notice?: "invite-only" };
+
 export const Route = createFileRoute("/login")({
   ssr: false,
+  validateSearch: (s: Record<string, unknown>): LoginSearch => ({
+    notice: s.notice === "invite-only" ? "invite-only" : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Sign in — Relay" },
@@ -17,6 +22,7 @@ export const Route = createFileRoute("/login")({
   },
   component: LoginPage,
 });
+
 
 function LoginPage() {
   const navigate = useNavigate();
