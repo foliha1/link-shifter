@@ -12,7 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { User } from "@supabase/supabase-js";
 
 import { supabase } from "@/integrations/supabase/client";
-import { AuthProvider, type Profile } from "@/lib/auth-context";
+import { AuthProvider, useAuth, type Profile } from "@/lib/auth-context";
 
 export const Route = createFileRoute("/_dashboard")({
   ssr: false,
@@ -78,9 +78,6 @@ function DashboardLayout() {
 
 function Sidebar() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const { user, profile } = { user: undefined as never, profile: undefined as never };
-  void user;
-  void profile;
 
   return (
     <aside className="hidden w-56 shrink-0 flex-col border-r border-border bg-background md:flex">
@@ -123,13 +120,9 @@ function Sidebar() {
 }
 
 function UserFooter() {
-  // Read from AuthProvider via useAuth to keep this component self-contained.
-  const { useAuth } = require("@/lib/auth-context") as typeof import("@/lib/auth-context");
   const { user, profile } = useAuth();
-  return <UserFooterInner email={profile?.email ?? user.email ?? ""} role={profile?.role ?? "member"} />;
-}
-
-function UserFooterInner({ email, role }: { email: string; role: string }) {
+  const email = profile?.email ?? user.email ?? "";
+  const role = profile?.role ?? "member";
   const navigate = useNavigate();
   const [signingOut, setSigningOut] = useState(false);
 
