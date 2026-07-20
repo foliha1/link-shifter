@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SignupRouteImport } from './routes/signup'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as DashboardRouteImport } from './routes/_dashboard'
 import { Route as DashboardIndexRouteImport } from './routes/_dashboard.index'
@@ -16,6 +17,11 @@ import { Route as DashboardSettingsRouteImport } from './routes/_dashboard.setti
 import { Route as DashboardCampaignsRouteImport } from './routes/_dashboard.campaigns'
 import { Route as DashboardAnalyticsRouteImport } from './routes/_dashboard.analytics'
 
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -49,12 +55,14 @@ const DashboardAnalyticsRoute = DashboardAnalyticsRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof DashboardIndexRoute
   '/login': typeof LoginRoute
+  '/signup': typeof SignupRoute
   '/analytics': typeof DashboardAnalyticsRoute
   '/campaigns': typeof DashboardCampaignsRoute
   '/settings': typeof DashboardSettingsRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
+  '/signup': typeof SignupRoute
   '/analytics': typeof DashboardAnalyticsRoute
   '/campaigns': typeof DashboardCampaignsRoute
   '/settings': typeof DashboardSettingsRoute
@@ -64,6 +72,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_dashboard': typeof DashboardRouteWithChildren
   '/login': typeof LoginRoute
+  '/signup': typeof SignupRoute
   '/_dashboard/analytics': typeof DashboardAnalyticsRoute
   '/_dashboard/campaigns': typeof DashboardCampaignsRoute
   '/_dashboard/settings': typeof DashboardSettingsRoute
@@ -71,13 +80,20 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/analytics' | '/campaigns' | '/settings'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/signup'
+    | '/analytics'
+    | '/campaigns'
+    | '/settings'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/analytics' | '/campaigns' | '/settings' | '/'
+  to: '/login' | '/signup' | '/analytics' | '/campaigns' | '/settings' | '/'
   id:
     | '__root__'
     | '/_dashboard'
     | '/login'
+    | '/signup'
     | '/_dashboard/analytics'
     | '/_dashboard/campaigns'
     | '/_dashboard/settings'
@@ -87,10 +103,18 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRouteWithChildren
   LoginRoute: typeof LoginRoute
+  SignupRoute: typeof SignupRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/login': {
       id: '/login'
       path: '/login'
@@ -157,6 +181,7 @@ const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRouteWithChildren,
   LoginRoute: LoginRoute,
+  SignupRoute: SignupRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
