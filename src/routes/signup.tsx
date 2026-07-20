@@ -15,7 +15,7 @@ export const Route = createFileRoute("/signup")({
     const { data: session } = await supabase.auth.getSession();
     if (session.session) throw redirect({ to: "/" });
     const { data, error } = await supabase.rpc("admin_exists");
-    if (error) throw error;
+    if (error) throw new Error(`Bootstrap check failed: ${error.message}`);
     if (data === true) {
       throw redirect({ to: "/login", search: { notice: "invite-only" } });
     }
