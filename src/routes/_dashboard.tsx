@@ -91,7 +91,7 @@ function Sidebar() {
           <div className="h-2 w-2 rounded-[1px] bg-accent" />
         </div>
         <span className="font-mono text-sm font-medium tracking-tight">
-          relay
+          Oleeha QR
         </span>
       </div>
 
@@ -174,7 +174,7 @@ function MobileTopBar() {
         <div className="grid h-5 w-5 place-items-center rounded-[3px] bg-primary">
           <div className="h-1.5 w-1.5 rounded-[1px] bg-accent" />
         </div>
-        <span className="font-mono text-sm font-medium">relay</span>
+        <span className="font-mono text-sm font-medium">Oleeha QR</span>
       </div>
       <nav className="flex gap-3">
         {items.map((n) => (

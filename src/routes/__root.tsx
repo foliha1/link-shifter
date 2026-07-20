@@ -99,23 +99,23 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Relay — Dynamic QR codes" },
+      { title: "Oleeha QR — Dynamic QR codes" },
       {
         name: "description",
         content:
-          "Relay is a dynamic QR code manager. Print once, re-point anytime.",
+          "Oleeha QR is a dynamic QR code manager. Print once, re-point anytime.",
       },
-      { name: "author", content: "Relay" },
-      { property: "og:title", content: "Relay — Dynamic QR codes" },
+      { name: "author", content: "Oleeha QR" },
+      { property: "og:title", content: "Oleeha QR — Dynamic QR codes" },
       {
         property: "og:description",
         content:
-          "Relay is a dynamic QR code manager. Print once, re-point anytime.",
+          "Oleeha QR is a dynamic QR code manager. Print once, re-point anytime.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:title", content: "Relay — Dynamic QR codes" },
-      { name: "twitter:description", content: "Relay is a dynamic QR code manager. Print once, re-point anytime." },
+      { name: "twitter:title", content: "Oleeha QR — Dynamic QR codes" },
+      { name: "twitter:description", content: "Oleeha QR is a dynamic QR code manager. Print once, re-point anytime." },
       { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/78a0a573-3345-474c-a6fd-0c49ebd316de/id-preview-3187dbc8--d40390c7-308b-4251-a998-2b867bc72203.lovable.app-1784566752570.png" },
       { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/78a0a573-3345-474c-a6fd-0c49ebd316de/id-preview-3187dbc8--d40390c7-308b-4251-a998-2b867bc72203.lovable.app-1784566752570.png" },
     ],

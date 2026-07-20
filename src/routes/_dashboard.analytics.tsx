@@ -4,7 +4,7 @@ import { EmptyState, PageHeader } from "@/components/page-header";
 export const Route = createFileRoute("/_dashboard/analytics")({
   head: () => ({
     meta: [
-      { title: "Analytics — Relay" },
+      { title: "Analytics — Oleeha QR" },
       { name: "description", content: "Scan activity across your codes." },
     ],
   }),

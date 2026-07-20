@@ -11,8 +11,8 @@ export const Route = createFileRoute("/accept")({
   }),
   head: () => ({
     meta: [
-      { title: "Accept invite — Relay" },
-      { name: "description", content: "Accept your Relay workspace invite." },
+      { title: "Accept invite — Oleeha QR" },
+      { name: "description", content: "Accept your Oleeha QR workspace invite." },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -92,7 +92,7 @@ function AcceptInvitePage() {
             <div className="h-2 w-2 rounded-[1px] bg-accent" />
           </div>
           <span className="font-mono text-sm font-medium tracking-tight">
-            relay
+            Oleeha QR
           </span>
         </div>
 

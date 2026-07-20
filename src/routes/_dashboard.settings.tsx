@@ -4,7 +4,7 @@ import { EmptyState, PageHeader } from "@/components/page-header";
 export const Route = createFileRoute("/_dashboard/settings")({
   head: () => ({
     meta: [
-      { title: "Settings — Relay" },
+      { title: "Settings — Oleeha QR" },
       { name: "description", content: "Workspace and redirect service settings." },
     ],
   }),
