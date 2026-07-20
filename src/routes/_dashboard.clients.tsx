@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { supabase } from "@/integrations/supabase/client";
+import { getAppBaseUrl } from "@/lib/app-url";
 import {
   EmptyState,
   PageHeader,
@@ -181,8 +182,7 @@ function ClientsPage() {
 }
 
 function inviteUrl(token: string) {
-  if (typeof window === "undefined") return `/accept?token=${token}`;
-  return `${window.location.origin}/accept?token=${token}`;
+  return `${getAppBaseUrl()}/accept?token=${token}`;
 }
 
 function WorkspaceDetail({ workspaceId }: { workspaceId: string }) {
