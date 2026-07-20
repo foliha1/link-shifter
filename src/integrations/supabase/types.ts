@@ -184,6 +184,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_exists: { Args: never; Returns: boolean }
       current_workspace_id: { Args: { _user_id: string }; Returns: string }
       generate_short_code: { Args: never; Returns: string }
       is_admin: { Args: { _user_id: string }; Returns: boolean }
