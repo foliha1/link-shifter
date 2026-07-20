@@ -1,10 +1,5 @@
+export const APP_BASE_URL = "https://oleeha-qr.lovable.app";
+
 export function getAppBaseUrl(): string {
-  const envUrl = import.meta.env.VITE_PUBLIC_APP_URL as string | undefined;
-  if (envUrl) {
-    return envUrl.replace(/\/$/, "");
-  }
-  if (typeof window === "undefined") {
-    return "";
-  }
-  return window.location.origin;
+  return APP_BASE_URL;
 }
