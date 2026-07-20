@@ -29,7 +29,7 @@ export const Route = createFileRoute("/_dashboard/clients")({
   },
   head: () => ({
     meta: [
-      { title: "Clients — Relay" },
+      { title: "Clients — Oleeha QR" },
       { name: "description", content: "Manage client workspaces." },
     ],
   }),

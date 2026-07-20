@@ -11,8 +11,8 @@ export const Route = createFileRoute("/login")({
   }),
   head: () => ({
     meta: [
-      { title: "Sign in — Relay" },
-      { name: "description", content: "Sign in to Relay." },
+      { title: "Sign in — Oleeha QR" },
+      { name: "description", content: "Sign in to Oleeha QR." },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -61,7 +61,7 @@ function LoginPage() {
             <div className="h-2 w-2 rounded-[1px] bg-accent" />
           </div>
           <span className="font-mono text-sm font-medium tracking-tight">
-            relay
+            Oleeha QR
           </span>
         </div>
 

@@ -6,8 +6,8 @@ export const Route = createFileRoute("/signup")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Create owner account — Relay" },
-      { name: "description", content: "Bootstrap the first Relay admin." },
+      { title: "Create owner account — Oleeha QR" },
+      { name: "description", content: "Bootstrap the first Oleeha QR admin." },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -69,7 +69,7 @@ function SignupPage() {
             <div className="h-2 w-2 rounded-[1px] bg-accent" />
           </div>
           <span className="font-mono text-sm font-medium tracking-tight">
-            relay
+            Oleeha QR
           </span>
         </div>
 

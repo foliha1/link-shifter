@@ -8,7 +8,7 @@ import {
 export const Route = createFileRoute("/_dashboard/campaigns")({
   head: () => ({
     meta: [
-      { title: "Campaigns — Relay" },
+      { title: "Campaigns — Oleeha QR" },
       {
         name: "description",
         content: "Group related codes into campaigns.",
