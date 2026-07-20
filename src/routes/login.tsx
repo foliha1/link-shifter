@@ -70,8 +70,14 @@ function LoginPage() {
           <p className="mt-1 text-xs text-muted-foreground">
             Invite-only. Use the credentials your admin gave you.
           </p>
+          {notice === "invite-only" ? (
+            <p className="mt-3 rounded-[6px] border border-border bg-background px-3 py-2 text-xs text-muted-foreground">
+              Sign-ups are by invitation only.
+            </p>
+          ) : null}
 
           <form onSubmit={onSubmit} className="mt-6 flex flex-col gap-4">
+
             <label className="flex flex-col gap-1.5">
               <span className="text-xs font-medium text-foreground">Email</span>
               <input
