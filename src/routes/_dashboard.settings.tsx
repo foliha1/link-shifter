@@ -13,6 +13,26 @@ export const Route = createFileRoute("/_dashboard/settings")({
   component: SettingsPage,
 });
 
+type StrengthCriteria = {
+  label: string;
+  met: boolean;
+};
+
+function getStrength(password: string): {
+  score: number;
+  max: number;
+  criteria: StrengthCriteria[];
+} {
+  const criteria: StrengthCriteria[] = [
+    { label: "At least 8 characters", met: password.length >= 8 },
+    { label: "Uppercase and lowercase letters", met: /[a-z]/.test(password) && /[A-Z]/.test(password) },
+    { label: "At least one number", met: /\d/.test(password) },
+    { label: "At least one symbol", met: /[^A-Za-z0-9]/.test(password) },
+  ];
+  const score = criteria.filter((c) => c.met).length;
+  return { score, max: criteria.length, criteria };
+}
+
 function SettingsPage() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -23,6 +43,16 @@ function SettingsPage() {
     newPassword: false,
     confirmPassword: false,
   });
+
+  const strength = getStrength(newPassword);
+  const strengthLabel =
+    strength.score === 0
+      ? "Too short"
+      : strength.score <= 2
+        ? "Weak"
+        : strength.score === 3
+          ? "Good"
+          : "Strong";
 
   const newPasswordError =
     touched.newPassword && newPassword.length > 0 && newPassword.length < 8
@@ -46,6 +76,11 @@ function SettingsPage() {
     setError(null);
 
     if (!isValid) return;
+
+    const confirmed = window.confirm(
+      "Are you sure you want to update your password?"
+    );
+    if (!confirmed) return;
 
     setLoading(true);
     const { error: err } = await supabase.auth.updateUser({
@@ -102,6 +137,49 @@ function SettingsPage() {
                 <span className="text-xs text-destructive">
                   {newPasswordError}
                 </span>
+              ) : null}
+
+              {newPassword.length > 0 ? (
+                <div className="mt-1 flex flex-col gap-2">
+                  <div className="flex items-center gap-2">
+                    <div className="flex flex-1 gap-1">
+                      {Array.from({ length: strength.max }).map((_, i) => (
+                        <div
+                          key={i}
+                          className={`h-1.5 flex-1 rounded-full transition-colors ${
+                            i < strength.score
+                              ? strength.score <= 2
+                                ? "bg-destructive"
+                                : strength.score === 3
+                                  ? "bg-accent"
+                                  : "bg-foreground"
+                              : "bg-border"
+                          }`}
+                        />
+                      ))}
+                    </div>
+                    <span className="text-xs text-muted-foreground">
+                      {strengthLabel}
+                    </span>
+                  </div>
+                  <ul className="flex flex-col gap-1">
+                    {strength.criteria.map((c) => (
+                      <li
+                        key={c.label}
+                        className={`flex items-center gap-1.5 text-xs ${
+                          c.met ? "text-foreground" : "text-muted-foreground"
+                        }`}
+                      >
+                        <span
+                          className={`inline-block h-1.5 w-1.5 rounded-full ${
+                            c.met ? "bg-foreground" : "bg-muted-foreground"
+                          }`}
+                        />
+                        {c.label}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               ) : null}
             </label>
 
