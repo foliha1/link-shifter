@@ -4,7 +4,6 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
-  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -139,107 +138,12 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
-const NAV = [
-  { to: "/", label: "Codes" },
-  { to: "/campaigns", label: "Campaigns" },
-  { to: "/analytics", label: "Analytics" },
-  { to: "/settings", label: "Settings" },
-] as const;
-
-function Sidebar() {
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
-
-  return (
-    <aside className="hidden w-56 shrink-0 flex-col border-r border-border bg-background md:flex">
-      <div className="flex h-14 items-center gap-2 px-5">
-        <div className="grid h-6 w-6 place-items-center rounded-[4px] bg-primary">
-          <div className="h-2 w-2 rounded-[1px] bg-accent" />
-        </div>
-        <span className="font-mono text-sm font-medium tracking-tight">
-          relay
-        </span>
-      </div>
-
-      <nav className="flex flex-col gap-px px-3 py-2">
-        {NAV.map((item) => {
-          const active =
-            item.to === "/"
-              ? pathname === "/"
-              : pathname.startsWith(item.to);
-          return (
-            <Link
-              key={item.to}
-              to={item.to}
-              className={[
-                "flex h-8 items-center rounded-[4px] px-2 text-sm transition-colors",
-                active
-                  ? "bg-surface-hover font-medium text-foreground"
-                  : "text-muted-foreground hover:bg-surface-hover hover:text-foreground",
-              ].join(" ")}
-            >
-              {item.label}
-            </Link>
-          );
-        })}
-      </nav>
-
-      <div className="mt-auto border-t border-border p-3">
-        <div className="flex items-center gap-2 px-2 py-1.5">
-          <div className="h-6 w-6 rounded-full bg-muted" />
-          <div className="min-w-0 flex-1">
-            <p className="truncate text-xs font-medium text-foreground">
-              Studio
-            </p>
-            <p className="truncate font-mono text-[10px] text-muted-foreground">
-              workspace
-            </p>
-          </div>
-        </div>
-      </div>
-    </aside>
-  );
-}
-
-function MobileTopBar() {
-  return (
-    <div className="flex h-12 items-center justify-between border-b border-border px-4 md:hidden">
-      <div className="flex items-center gap-2">
-        <div className="grid h-5 w-5 place-items-center rounded-[3px] bg-primary">
-          <div className="h-1.5 w-1.5 rounded-[1px] bg-accent" />
-        </div>
-        <span className="font-mono text-sm font-medium">relay</span>
-      </div>
-      <nav className="flex gap-3">
-        {NAV.map((n) => (
-          <Link
-            key={n.to}
-            to={n.to}
-            className="text-xs text-muted-foreground hover:text-foreground"
-            activeProps={{ className: "text-xs text-foreground font-medium" }}
-            activeOptions={{ exact: n.to === "/" }}
-          >
-            {n.label}
-          </Link>
-        ))}
-      </nav>
-    </div>
-  );
-}
-
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="flex min-h-screen w-full bg-background text-foreground">
-        <Sidebar />
-        <div className="flex min-w-0 flex-1 flex-col">
-          <MobileTopBar />
-          <main className="flex-1">
-            <Outlet />
-          </main>
-        </div>
-      </div>
+      <Outlet />
     </QueryClientProvider>
   );
 }
