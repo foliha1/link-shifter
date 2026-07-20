@@ -9,104 +9,109 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as SettingsRouteImport } from './routes/settings'
-import { Route as CampaignsRouteImport } from './routes/campaigns'
-import { Route as AnalyticsRouteImport } from './routes/analytics'
-import { Route as IndexRouteImport } from './routes/index'
+import { Route as DashboardIndexRouteImport } from './routes/_dashboard.index'
+import { Route as DashboardSettingsRouteImport } from './routes/_dashboard.settings'
+import { Route as DashboardCampaignsRouteImport } from './routes/_dashboard.campaigns'
+import { Route as DashboardAnalyticsRouteImport } from './routes/_dashboard.analytics'
 
-const SettingsRoute = SettingsRouteImport.update({
-  id: '/settings',
+const DashboardIndexRoute = DashboardIndexRouteImport.update({
+  id: '/_dashboard/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardSettingsRoute = DashboardSettingsRouteImport.update({
+  id: '/_dashboard/settings',
   path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CampaignsRoute = CampaignsRouteImport.update({
-  id: '/campaigns',
+const DashboardCampaignsRoute = DashboardCampaignsRouteImport.update({
+  id: '/_dashboard/campaigns',
   path: '/campaigns',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AnalyticsRoute = AnalyticsRouteImport.update({
-  id: '/analytics',
+const DashboardAnalyticsRoute = DashboardAnalyticsRouteImport.update({
+  id: '/_dashboard/analytics',
   path: '/analytics',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/analytics': typeof AnalyticsRoute
-  '/campaigns': typeof CampaignsRoute
-  '/settings': typeof SettingsRoute
+  '/analytics': typeof DashboardAnalyticsRoute
+  '/campaigns': typeof DashboardCampaignsRoute
+  '/settings': typeof DashboardSettingsRoute
+  '/': typeof DashboardIndexRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/analytics': typeof AnalyticsRoute
-  '/campaigns': typeof CampaignsRoute
-  '/settings': typeof SettingsRoute
+  '/analytics': typeof DashboardAnalyticsRoute
+  '/campaigns': typeof DashboardCampaignsRoute
+  '/settings': typeof DashboardSettingsRoute
+  '/': typeof DashboardIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/analytics': typeof AnalyticsRoute
-  '/campaigns': typeof CampaignsRoute
-  '/settings': typeof SettingsRoute
+  '/_dashboard/analytics': typeof DashboardAnalyticsRoute
+  '/_dashboard/campaigns': typeof DashboardCampaignsRoute
+  '/_dashboard/settings': typeof DashboardSettingsRoute
+  '/_dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/analytics' | '/campaigns' | '/settings'
+  fullPaths: '/analytics' | '/campaigns' | '/settings' | '/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/analytics' | '/campaigns' | '/settings'
-  id: '__root__' | '/' | '/analytics' | '/campaigns' | '/settings'
+  to: '/analytics' | '/campaigns' | '/settings' | '/'
+  id:
+    | '__root__'
+    | '/_dashboard/analytics'
+    | '/_dashboard/campaigns'
+    | '/_dashboard/settings'
+    | '/_dashboard/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AnalyticsRoute: typeof AnalyticsRoute
-  CampaignsRoute: typeof CampaignsRoute
-  SettingsRoute: typeof SettingsRoute
+  DashboardAnalyticsRoute: typeof DashboardAnalyticsRoute
+  DashboardCampaignsRoute: typeof DashboardCampaignsRoute
+  DashboardSettingsRoute: typeof DashboardSettingsRoute
+  DashboardIndexRoute: typeof DashboardIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/settings': {
-      id: '/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof SettingsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/campaigns': {
-      id: '/campaigns'
-      path: '/campaigns'
-      fullPath: '/campaigns'
-      preLoaderRoute: typeof CampaignsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/analytics': {
-      id: '/analytics'
-      path: '/analytics'
-      fullPath: '/analytics'
-      preLoaderRoute: typeof AnalyticsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
+    '/_dashboard/': {
+      id: '/_dashboard/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+      preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_dashboard/settings': {
+      id: '/_dashboard/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof DashboardSettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_dashboard/campaigns': {
+      id: '/_dashboard/campaigns'
+      path: '/campaigns'
+      fullPath: '/campaigns'
+      preLoaderRoute: typeof DashboardCampaignsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_dashboard/analytics': {
+      id: '/_dashboard/analytics'
+      path: '/analytics'
+      fullPath: '/analytics'
+      preLoaderRoute: typeof DashboardAnalyticsRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  AnalyticsRoute: AnalyticsRoute,
-  CampaignsRoute: CampaignsRoute,
-  SettingsRoute: SettingsRoute,
+  DashboardAnalyticsRoute: DashboardAnalyticsRoute,
+  DashboardCampaignsRoute: DashboardCampaignsRoute,
+  DashboardSettingsRoute: DashboardSettingsRoute,
+  DashboardIndexRoute: DashboardIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -6,7 +6,7 @@ import {
   SecondaryButton,
 } from "@/components/page-header";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/_dashboard/")({
   component: CodesPage,
 });
 

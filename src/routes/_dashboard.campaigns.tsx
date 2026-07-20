@@ -5,7 +5,7 @@ import {
   PrimaryButton,
 } from "@/components/page-header";
 
-export const Route = createFileRoute("/campaigns")({
+export const Route = createFileRoute("/_dashboard/campaigns")({
   head: () => ({
     meta: [
       { title: "Campaigns — Relay" },

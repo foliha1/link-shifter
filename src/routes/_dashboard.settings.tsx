@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { EmptyState, PageHeader } from "@/components/page-header";
 
-export const Route = createFileRoute("/settings")({
+export const Route = createFileRoute("/_dashboard/settings")({
   head: () => ({
     meta: [
       { title: "Settings — Relay" },

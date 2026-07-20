@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { EmptyState, PageHeader } from "@/components/page-header";
 
-export const Route = createFileRoute("/analytics")({
+export const Route = createFileRoute("/_dashboard/analytics")({
   head: () => ({
     meta: [
       { title: "Analytics — Relay" },
