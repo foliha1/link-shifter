@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as AcceptRouteImport } from './routes/accept'
 import { Route as DashboardRouteImport } from './routes/_dashboard'
 import { Route as DashboardIndexRouteImport } from './routes/_dashboard.index'
 import { Route as DashboardSettingsRouteImport } from './routes/_dashboard.settings'
@@ -26,6 +27,11 @@ const SignupRoute = SignupRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AcceptRoute = AcceptRouteImport.update({
+  id: '/accept',
+  path: '/accept',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -60,6 +66,7 @@ const DashboardAnalyticsRoute = DashboardAnalyticsRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof DashboardIndexRoute
+  '/accept': typeof AcceptRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/analytics': typeof DashboardAnalyticsRoute
@@ -68,6 +75,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof DashboardSettingsRoute
 }
 export interface FileRoutesByTo {
+  '/accept': typeof AcceptRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/analytics': typeof DashboardAnalyticsRoute
@@ -79,6 +87,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_dashboard': typeof DashboardRouteWithChildren
+  '/accept': typeof AcceptRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/_dashboard/analytics': typeof DashboardAnalyticsRoute
@@ -91,6 +100,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/accept'
     | '/login'
     | '/signup'
     | '/analytics'
@@ -99,6 +109,7 @@ export interface FileRouteTypes {
     | '/settings'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/accept'
     | '/login'
     | '/signup'
     | '/analytics'
@@ -109,6 +120,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/_dashboard'
+    | '/accept'
     | '/login'
     | '/signup'
     | '/_dashboard/analytics'
@@ -120,6 +132,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   DashboardRoute: typeof DashboardRouteWithChildren
+  AcceptRoute: typeof AcceptRoute
   LoginRoute: typeof LoginRoute
   SignupRoute: typeof SignupRoute
 }
@@ -138,6 +151,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/accept': {
+      id: '/accept'
+      path: '/accept'
+      fullPath: '/accept'
+      preLoaderRoute: typeof AcceptRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_dashboard': {
@@ -207,9 +227,20 @@ const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   DashboardRoute: DashboardRouteWithChildren,
+  AcceptRoute: AcceptRoute,
   LoginRoute: LoginRoute,
   SignupRoute: SignupRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
