@@ -1,55 +1,63 @@
-import { createFileRoute, redirect, useNavigate, useSearch } from "@tanstack/react-router";
+import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { useState, type FormEvent } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
-type LoginSearch = { notice?: "invite-only" };
-
-export const Route = createFileRoute("/login")({
+export const Route = createFileRoute("/signup")({
   ssr: false,
-  validateSearch: (s: Record<string, unknown>): LoginSearch => ({
-    notice: s.notice === "invite-only" ? "invite-only" : undefined,
-  }),
   head: () => ({
     meta: [
-      { title: "Sign in — Relay" },
-      { name: "description", content: "Sign in to Relay." },
+      { title: "Create owner account — Relay" },
+      { name: "description", content: "Bootstrap the first Relay admin." },
       { name: "robots", content: "noindex" },
     ],
   }),
   beforeLoad: async () => {
-    const { data } = await supabase.auth.getSession();
-    if (data.session) throw redirect({ to: "/" });
+    const { data: session } = await supabase.auth.getSession();
+    if (session.session) throw redirect({ to: "/" });
+    const { data, error } = await supabase.rpc("admin_exists");
+    if (error) throw error;
+    if (data === true) {
+      throw redirect({ to: "/login", search: { notice: "invite-only" } });
+    }
   },
-  component: LoginPage,
+  component: SignupPage,
 });
 
-
-function LoginPage() {
+function SignupPage() {
   const navigate = useNavigate();
-  const { notice } = useSearch({ from: "/login" });
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     setError(null);
     setLoading(true);
-    const { error: err } = await supabase.auth.signInWithPassword({
+    const { data, error: err } = await supabase.auth.signUp({
       email: email.trim(),
       password,
+      options: { emailRedirectTo: window.location.origin },
     });
-    setLoading(false);
     if (err) {
-      setError(
-        /invalid/i.test(err.message)
-          ? "Wrong email or password."
-          : err.message,
-      );
+      setLoading(false);
+      setError(err.message);
       return;
     }
+    if (!data.session) {
+      const { error: signInErr } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password,
+      });
+      if (signInErr) {
+        setLoading(false);
+        setError(
+          "Account created, but sign-in failed. Disable email confirmation, then sign in.",
+        );
+        return;
+      }
+    }
+    setLoading(false);
     navigate({ to: "/" });
   }
 
@@ -66,18 +74,14 @@ function LoginPage() {
         </div>
 
         <div className="rounded-[6px] border border-border bg-surface p-6">
-          <h1 className="text-sm font-medium text-foreground">Sign in</h1>
+          <h1 className="text-sm font-medium text-foreground">
+            Create owner account
+          </h1>
           <p className="mt-1 text-xs text-muted-foreground">
-            Invite-only. Use the credentials your admin gave you.
+            This is the first account, so it becomes the workspace admin.
           </p>
-          {notice === "invite-only" ? (
-            <p className="mt-3 rounded-[6px] border border-border bg-background px-3 py-2 text-xs text-muted-foreground">
-              Sign-ups are by invitation only.
-            </p>
-          ) : null}
 
           <form onSubmit={onSubmit} className="mt-6 flex flex-col gap-4">
-
             <label className="flex flex-col gap-1.5">
               <span className="text-xs font-medium text-foreground">Email</span>
               <input
@@ -97,8 +101,9 @@ function LoginPage() {
               </span>
               <input
                 type="password"
-                autoComplete="current-password"
+                autoComplete="new-password"
                 required
+                minLength={8}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={loading}
@@ -107,10 +112,7 @@ function LoginPage() {
             </label>
 
             {error ? (
-              <p
-                role="alert"
-                className="text-xs text-destructive"
-              >
+              <p role="alert" className="text-xs text-destructive">
                 {error}
               </p>
             ) : null}
@@ -126,7 +128,7 @@ function LoginPage() {
                   className="h-3 w-3 animate-spin rounded-full border border-current border-t-transparent"
                 />
               ) : null}
-              {loading ? "Signing in…" : "Sign in"}
+              {loading ? "Creating…" : "Create account"}
             </button>
           </form>
         </div>
