@@ -151,8 +151,8 @@ function SettingsPage() {
                               ? strength.score <= 2
                                 ? "bg-destructive"
                                 : strength.score === 3
-                                  ? "bg-yellow-500"
-                                  : "bg-green-600"
+                                  ? "bg-accent"
+                                  : "bg-foreground"
                               : "bg-border"
                           }`}
                         />
